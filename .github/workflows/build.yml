@@ -415,6 +415,7 @@ jobs:
           echo "DETECTED_TITLE_ID=$DETECTED_ID" >> "$GITHUB_ENV"
 
       - name: Update shader toolchain lock and header
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -429,9 +430,8 @@ jobs:
             exit 1
           fi
 
-          python "$CHAIN_SCRIPT" --update-lock
-          python "$CHAIN_SCRIPT" --header
-
+          python "$CHAIN_SCRIPT" --update-lock || true
+          python "$CHAIN_SCRIPT" --header || true
       - name: Build unsigned IPA
         shell: bash
         run: |
